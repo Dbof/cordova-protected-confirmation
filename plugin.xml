@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-protected-confirmation" version="0.2.3">
+<name>Protected Confirmation</name>
+<author>Davide Bove</author>
+<description>The Protected Confirmation functionality of Android v9+ for Cordova</description>
+<license>MIT</license>
+<keywords>security,android,protected,confirmation</keywords>
+<js-module src="www/protectedconfirmation.js" name="ProtectedConfirmation">
+    <clobbers target="ProtectedConfirmation" />
+</js-module>
+
+
+<platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="ProtectedConfirmation" >
+            <param name="android-package" value="com.davidebove.cordova.protectedconfirmation.ProtectedConfirmation"/>
+        </feature>
+    </config-file>
+
+    <source-file src="src/android/ProtectedConfirmation.java" target-dir="src/com/davidebove/cordova/protectedconfirmation/" />
+</platform>
+</plugin>
