@@ -6,8 +6,8 @@
 <description>The Protected Confirmation functionality of Android v9+ for Cordova</description>
 <license>MIT</license>
 <keywords>security,android,protected,confirmation</keywords>
-<js-module src="www/protectedconfirmation.js" name="ProtectedConfirmation">
-    <clobbers target="ProtectedConfirmation" />
+<js-module src="www/protectedconfirmation.js" name="protectedconfirmation">
+    <clobbers target="cordova.plugin.protectedconfirmation" />
 </js-module>
 
 
