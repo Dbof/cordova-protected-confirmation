@@ -1,0 +1,29 @@
+{
+  "name": "cordova-protected-confirmation",
+  "version": "0.1.0",
+  "description": "The Protected Confirmation functionality of Android v9+ for Cordova",
+  "cordova": {
+    "id": "cordova-protected-confirmation",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dbof/cordova-protected-confirmation.git"
+  },
+  "keywords": [
+    "security",
+    "android",
+    "protected",
+    "confirmation",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Davide Bove",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dbof/cordova-protected-confirmation/issues"
+  },
+  "homepage": "https://github.com/Dbof/cordova-protected-confirmation#readme"
+}
