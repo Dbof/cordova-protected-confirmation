@@ -158,7 +158,10 @@ public class ProtectedConfirmation extends CordovaPlugin {
             @Override
             public void onConfirmed(byte[] dataThatWasConfirmed) {
                 super.onConfirmed(dataThatWasConfirmed);
-                callbackContext.success(dataThatWasConfirmed);
+                JSONArray result = new JSONArray();
+                result.put(Base64.encodeToString(dataThatWasConfirmed, Base64.DEFAULT));
+                result.put(Base64.encodeToString(dataThatWasConfirmed, Base64.DEFAULT));
+                callbackContext.success(result);
             }
 
             @Override
