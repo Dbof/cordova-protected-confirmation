@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="cordova-protected-confirmation" version="0.2.3">
+    id="cordova-protected-confirmation" version="0.1.0">
 <name>Protected Confirmation</name>
 <author>Davide Bove</author>
 <description>The Protected Confirmation functionality of Android v9+ for Cordova</description>
