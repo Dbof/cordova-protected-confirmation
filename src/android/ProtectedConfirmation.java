@@ -8,6 +8,7 @@ import android.security.ConfirmationPrompt;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -19,12 +20,18 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
@@ -159,16 +166,25 @@ public class ProtectedConfirmation extends CordovaPlugin {
             public void onConfirmed(byte[] dataThatWasConfirmed) {
                 super.onConfirmed(dataThatWasConfirmed);
 
+                // sign the data
+                byte[] signature = null;
+                try {
+                    signature = signData(dataThatWasConfirmed);
+                } catch (Exception e) {
+                    callbackContext.error("Error while signing confirmation data");
+                    return;
+                }
+
                 ByteArrayOutputStream os = new ByteArrayOutputStream();
                 byte[] data64 = Base64.encode(dataThatWasConfirmed, Base64.NO_WRAP);
-                byte[] sign64 = Base64.encode(dataThatWasConfirmed, Base64.NO_WRAP);  // TODO: change to signature
+                byte[] sign64 = Base64.encode(signature, Base64.NO_WRAP);  // TODO: change to signature
                 try {
                     os.write(data64);
                     os.write("|".getBytes());
                     os.write(sign64);
                     callbackContext.success(os.toByteArray());
                 } catch (IOException e) {
-                    callbackContext.error("Could not sign confirmation data");
+                    callbackContext.error("Error while encoding data and signature");
                 }
             }
 
@@ -190,5 +206,31 @@ public class ProtectedConfirmation extends CordovaPlugin {
                 callbackContext.error("Error while showing Confirmation Prompt: " + e.getMessage());
             }
         };
+    }
+
+    private byte[] signData(byte[] dataThatWasConfirmed) throws Exception {
+        // load keys to sign
+        KeyPair keyPair = null;
+
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+        keyStore.load(null);
+        if (keyStore.containsAlias(PROTECTED_CONFIRMATION_KEYALIAS)) {
+            // Get public key
+            PublicKey publicKey = keyStore.getCertificate(PROTECTED_CONFIRMATION_KEYALIAS).getPublicKey();
+            // Get private key
+            PrivateKey privateKey = (PrivateKey) keyStore.getKey(PROTECTED_CONFIRMATION_KEYALIAS, null);
+            // Return a key pair
+            keyPair = new KeyPair(publicKey, privateKey);
+        }
+
+        if (keyPair != null) {
+            // init signature and sign data
+            Signature signature = null;
+            signature = Signature.getInstance("SHA256withECDSA");
+            signature.initSign(keyPair.getPrivate());
+            signature.update(dataThatWasConfirmed);
+            return signature.sign();
+        }
+        return null;
     }
 }
