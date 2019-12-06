@@ -172,7 +172,7 @@ public class ProtectedConfirmation extends CordovaPlugin {
 
                 ByteArrayOutputStream os = new ByteArrayOutputStream();
                 byte[] data64 = Base64.encode(dataThatWasConfirmed, Base64.NO_WRAP);
-                byte[] sign64 = Base64.encode(signature, Base64.NO_WRAP);  // TODO: change to signature
+                byte[] sign64 = Base64.encode(signature, Base64.NO_WRAP);
                 try {
                     os.write(data64);
                     os.write("|".getBytes());
