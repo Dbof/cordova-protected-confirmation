@@ -158,10 +158,18 @@ public class ProtectedConfirmation extends CordovaPlugin {
             @Override
             public void onConfirmed(byte[] dataThatWasConfirmed) {
                 super.onConfirmed(dataThatWasConfirmed);
-                JSONArray result = new JSONArray();
-                result.put(Base64.encodeToString(dataThatWasConfirmed, Base64.DEFAULT));
-                result.put(Base64.encodeToString(dataThatWasConfirmed, Base64.DEFAULT));
-                callbackContext.success(result);
+
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                byte[] data64 = Base64.encode(dataThatWasConfirmed, Base64.NO_WRAP);
+                byte[] sign64 = Base64.encode(dataThatWasConfirmed, Base64.NO_WRAP);  // TODO: change to signature
+                try {
+                    os.write(data64);
+                    os.write("|".getBytes());
+                    os.write(sign64);
+                    callbackContext.success(os.toByteArray());
+                } catch (IOException e) {
+                    callbackContext.error("Could not sign confirmation data");
+                }
             }
 
             @Override
