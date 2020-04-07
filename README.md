@@ -1,6 +1,6 @@
 # Cordova-Protected-Confirmation plugin for Cordova
 This Cordova plugin provides the [Protected Confirmation](https://source.android.com/security/protected-confirmation) functionality introduced in Android 9 (Pie).
-Note that Android Protected Confirmation Protected Confirmation may not be supported by all devices running Android Pie but requires a special co-processor in order to work. Also, this plugin **only works with Android**, at the moment there is no similar API for iOS.
+Note that Android Protected Confirmation may not be supported by all devices running Android Pie but requires a special co-processor in order to work. Also, this plugin **only works with Android**, at the moment there is no similar API for iOS.
 
 At the time of writing this, only the following devices are supported:
 
